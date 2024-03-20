@@ -40,7 +40,7 @@ python data_process.py \
 --map_path nuplan/dataset/maps \
 --save_path nuplan/processed_data
 ```
-Three arguments are necessary: ```--data_path``` to specify the path to the stored nuPlan dataset, ```--map_path``` to specify the path to the nuPlan map data, and ```--save_path``` to specify the path to save the processed data.  ```--total_scenarios``` argument to limit the number of scenarios.
+Three arguments are necessary: ```--data_path``` to specify the path to the stored nuPlan dataset, ```--map_path``` to specify the path to the nuPlan map data, and ```--save_path``` to specify the path to save the processed data. Set the optional ```--total_scenarios``` argument to limit the number of training scenarios.
 
 ### 3. Training
 To train the DTPP model, run:
@@ -65,7 +65,7 @@ python run_nuplan_test.py \
 ```
 Choose one of the three options ('open_loop_boxes', 'closed_loop_nonreactive_agents', 'closed_loop_reactive_agents') for ```--test_type```, and specify the paths ```--encoder_path``` and  ```--decoder_path```, which point to your trained models (encoder and decoder). Ensure to provide ```--data_path``` and ```--map_path``` arguments as done in the data process step.
 
-Adjust the ```--scenarios_per_type``` to control the number of scenarios tested.
+Adjust the ```--scenarios_per_type``` argument to control the number of scenarios tested per type.
 
 **Make sure the model parameters in ```planner.py``` in ```_initialize_model``` match those used in training.**
 
