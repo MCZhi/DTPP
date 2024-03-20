@@ -14,12 +14,11 @@ from nuplan.planning.simulation.observation.idm.utils import path_to_linestring
 
 
 class Planner(AbstractPlanner):
-    def __init__(self, encoder_path, decoder_path, device):
+    def __init__(self, model_path, device):
         self._future_horizon = T # [s] 
         self._step_interval = DT # [s]
         self._N_points = int(T/DT)
-        self._encoder_path = encoder_path
-        self._decoder_path = decoder_path
+        self._model_path = model_path
         self._device = device
 
     def name(self) -> str:
@@ -37,12 +36,13 @@ class Planner(AbstractPlanner):
         self._trajectory_planner = TreePlanner(self._device, self._encoder, self._decoder)
 
     def _initialize_model(self):
+        model = torch.load(self._model_path, map_location=self._device)
         self._encoder = Encoder()
-        self._encoder.load_state_dict(torch.load(self._encoder_path, map_location=self._device))
+        self._encoder.load_state_dict(model['encoder'])
         self._encoder.to(self._device)
         self._encoder.eval()
         self._decoder = Decoder()
-        self._decoder.load_state_dict(torch.load(self._decoder_path, map_location=self._device))
+        self._decoder.load_state_dict(model['decoder'])
         self._decoder.to(self._device)
         self._decoder.eval()
 

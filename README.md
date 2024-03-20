@@ -63,7 +63,7 @@ python test.py \
 --encoder_path training_log/your/encoder \
 --decoder_path training_log/your/decoder 
 ```
-Choose one of the three options ('open_loop_boxes', 'closed_loop_nonreactive_agents', 'closed_loop_reactive_agents') for ```--test_type```, and specify paths ```--encoder_path``` and  ```--decoder_path```, which point to your trained models (encoder and decoder). Ensure to provide ```--data_path``` and ```--map_path``` arguments as done in the data process step.
+Choose one of the three options ('open_loop_boxes', 'closed_loop_nonreactive_agents', 'closed_loop_reactive_agents') for ```--test_type```, and specify the path to your trained model ```--model_path```. Ensure to provide ```--data_path``` and ```--map_path``` arguments as done in the data process step.
 
 Adjust the ```--scenarios_per_type``` argument to control the number of scenarios tested per type.
 

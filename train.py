@@ -193,8 +193,8 @@ def model_training(args):
         scheduler.step()
 
         # save model at the end of epoch
-        torch.save(encoder.state_dict(), f'training_log/{args.name}/encoder_epoch_{epoch+1}_valADE_{val_metrics[0]:.4f}.pth')
-        torch.save(decoder.state_dict(), f'training_log/{args.name}/decoder_epoch_{epoch+1}_valADE_{val_metrics[0]:.4f}.pth')
+        model = {'encoder': encoder.state_dict(), 'decoder': decoder.state_dict()}
+        torch.save(model, f'training_log/{args.name}/model_epoch_{epoch+1}_valADE_{val_metrics[0]:.4f}.pth')
         logging.info(f"Model saved in training_log/{args.name}\n")
 
 

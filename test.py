@@ -163,7 +163,7 @@ def main(args):
 
     # initialize planner
     torch.set_grad_enabled(False)
-    planner = Planner(encoder_path=args.encoder_path, decoder_path=args.decoder_path, device=args.device)
+    planner = Planner(model_path=args.model_path, device=args.device)
 
     # initialize main aggregator
     metric_aggregators = build_metrics_aggregators(experiment_name, output_dir, aggregator_metric_dir)
@@ -205,8 +205,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', type=str)
     parser.add_argument('--map_path', type=str)
-    parser.add_argument('--encoder_path', type=str)
-    parser.add_argument('--decoder_path', type=str)
+    parser.add_argument('--model_path', type=str)
     parser.add_argument('--test_type', type=str, default='closed_loop_nonreactive_agents')
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--scenarios_per_type', type=int, default=20)
