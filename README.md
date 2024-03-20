@@ -81,8 +81,7 @@ If you find this project useful in your research, please consider citing:
 }
 ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 ## Contact
 If you have any questions or suggestions, please feel free to open an issue or contact us (*zhiyu001@e.ntu.edu.sg*).
 
+<p align="right">(<a href="#top">back to top</a>)</p>
