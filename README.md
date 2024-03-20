@@ -60,8 +60,7 @@ python test.py \
 --test_type closed_loop_nonreactive_agents \
 --data_path nuplan/dataset/nuplan-v1.1/splits/mini \
 --map_path nuplan/dataset/maps \
---encoder_path training_log/your/encoder \
---decoder_path training_log/your/decoder 
+--model_path training_log/your/model
 ```
 Choose one of the three options ('open_loop_boxes', 'closed_loop_nonreactive_agents', 'closed_loop_reactive_agents') for ```--test_type```, and specify the path to your trained model ```--model_path```. Ensure to provide ```--data_path``` and ```--map_path``` arguments as done in the data process step.
 
