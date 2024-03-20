@@ -11,7 +11,7 @@ This repository contains the code for the ICRA'24 paper:
 
 
 ## Getting Started
-### 1. Configure devkit and envrionment
+### 1. Configure devkit and environment
 To begin, please follow these steps:
 - Download the [nuPlan dataset](https://www.nuscenes.org/nuplan#download) and set it up as described [here](https://nuplan-devkit.readthedocs.io/en/latest/dataset_setup.html). 
 - Install the nuPlan devkit [here](https://nuplan-devkit.readthedocs.io/en/latest/installation.html) (version tested: v1.2.2). 
