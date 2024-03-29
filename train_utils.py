@@ -75,7 +75,7 @@ def calc_loss(neighbors, ego, ego_regularization, scores, weights, ego_gt, neigh
 
     weights_regularization = torch.square(weights).mean()
 
-    loss = cmp_loss + 0.1 * irl_loss + 0.01 * regularization_loss + 0.01 * weights_regularization
+    loss = cmp_loss + irl_loss + 0.01 * regularization_loss + 0.01 * weights_regularization
 
     return loss
 
