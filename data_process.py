@@ -218,6 +218,7 @@ class DataProcessor(object):
             token = scenario.token
             self.scenario = scenario
             self.map_api = scenario.map_api
+            print(scenario)
 
             # get agent past tracks
             ego_agent_past, time_stamps_past = self.get_ego_agent()
@@ -268,9 +269,9 @@ class DataProcessor(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Data Processing')
     parser.add_argument('--debug', action="store_true", help='if visualize the data output', default=False)
-    parser.add_argument('--data_path', type=str, help='path to the data', default=None)
-    parser.add_argument('--map_path', type=str, help='path to the map', default=None)    
-    parser.add_argument('--save_path', type=str, help='path to save the processed data', default=None)
+    parser.add_argument('--data_path', type=str, help='path to the data')
+    parser.add_argument('--map_path', type=str, help='path to the map')    
+    parser.add_argument('--save_path', type=str, help='path to save the processed data')
     parser.add_argument('--total_scenarios', type=int, help='total number of scenarios', default=None)
 
     args = parser.parse_args()
@@ -283,7 +284,7 @@ if __name__ == "__main__":
                                                             limit_total_scenarios=args.total_scenarios))
     worker = SingleMachineParallelExecutor(use_process_pool=True)
     scenarios = builder.get_scenarios(scenario_filter, worker)
-    print(f"Total number of scenarios: {len(scenarios)}")
+    print(f"Total number of training scenarios: {len(scenarios)}")
     
     del worker, builder, scenario_filter
     processor = DataProcessor(scenarios)

@@ -132,6 +132,7 @@ def get_aggregator_config(experiment):
 
     return name, metric_weights, file_name, multiple_metrics, challenge_name
 
+
 def get_scenario_map():
     scenario_map = {
         'accelerating_at_crosswalk': [15.0, -3.0],
