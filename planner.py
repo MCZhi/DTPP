@@ -104,6 +104,6 @@ class Planner(AbstractPlanner):
         # Convert relative poses to absolute states and wrap in a trajectory object
         states = transform_predictions_to_states(plan, history.ego_states, self._future_horizon, DT)
         trajectory = InterpolatedTrajectory(states)
-        print(f'Planning time: {time.perf_counter() - start_time:.3f} s')
+        print(f'Step {iteration+1} Planning time: {time.perf_counter() - start_time:.3f} s')
 
         return trajectory

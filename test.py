@@ -1,3 +1,4 @@
+import yaml
 import datetime
 import torch
 import argparse
@@ -79,14 +80,26 @@ def build_simulation(experiment, planner, scenarios, output_dir, simulation_dir,
             ego_controller = LogPlaybackController(scenario) 
             observations = TracksObservation(scenario)
         elif experiment == 'closed_loop_nonreactive_agents':
-            ego_controller = PerfectTrackingController(scenario)
+            tracker = LQRTracker(q_longitudinal=[10.0], r_longitudinal=[1.0], q_lateral=[1.0, 10.0, 0.0], 
+                                 r_lateral=[1.0], discretization_time=0.1, tracking_horizon=10, 
+                                 jerk_penalty=1e-4, curvature_rate_penalty=1e-2, 
+                                 stopping_proportional_gain=0.5, stopping_velocity=0.2)
+            motion_model = KinematicBicycleModel(get_pacifica_parameters())
+            ego_controller = TwoStageController(scenario, tracker, motion_model) 
             observations = TracksObservation(scenario)
-        else:
-            ego_controller = PerfectTrackingController(scenario)
+        elif experiment == 'closed_loop_reactive_agents':      
+            tracker = LQRTracker(q_longitudinal=[10.0], r_longitudinal=[1.0], q_lateral=[1.0, 10.0, 0.0], 
+                                 r_lateral=[1.0], discretization_time=0.1, tracking_horizon=10, 
+                                 jerk_penalty=1e-4, curvature_rate_penalty=1e-2, 
+                                 stopping_proportional_gain=0.5, stopping_velocity=0.2)
+            motion_model = KinematicBicycleModel(get_pacifica_parameters())
+            ego_controller = TwoStageController(scenario, tracker, motion_model) 
             observations = IDMAgents(target_velocity=10, min_gap_to_lead_agent=1.0, headway_time=1.5,
                                      accel_max=1.0, decel_max=2.0, scenario=scenario,
                                      open_loop_detections_types=["PEDESTRIAN", "BARRIER", "CZONE_SIGN", "TRAFFIC_CONE", "GENERIC_OBJECT"])
-
+        else:
+            raise ValueError(f"Invalid experiment type: {experiment}")
+            
         # Simulation Manager
         simulation_time_controller = StepSimulationTimeController(scenario)
 
@@ -187,7 +200,11 @@ def main(args):
     map_version = "nuplan-maps-v1.0"
     scenario_mapping = ScenarioMapping(scenario_map=get_scenario_map(), subsample_ratio_override=0.5)
     builder = NuPlanScenarioBuilder(args.data_path, args.map_path, None, None, map_version, scenario_mapping=scenario_mapping)
-    scenario_filter = ScenarioFilter(*get_filter_parameters(args.scenarios_per_type))
+    if args.load_test_set:
+        params = yaml.safe_load(open('test_scenario.yaml', 'r'))
+        scenario_filter = ScenarioFilter(**params)
+    else:
+        scenario_filter = ScenarioFilter(*get_filter_parameters(args.scenarios_per_type))
     worker = SingleMachineParallelExecutor(use_process_pool=False)
     scenarios = builder.get_scenarios(scenario_filter, worker)
 
@@ -207,6 +224,7 @@ if __name__ == "__main__":
     parser.add_argument('--map_path', type=str)
     parser.add_argument('--model_path', type=str)
     parser.add_argument('--test_type', type=str, default='closed_loop_nonreactive_agents')
+    parser.add_argument('--load_test_set', action='store_true')
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--scenarios_per_type', type=int, default=20)
     args = parser.parse_args()

@@ -279,9 +279,11 @@ if __name__ == "__main__":
     map_version = "nuplan-maps-v1.0"
     scenario_mapping = ScenarioMapping(scenario_map=get_scenario_map(), subsample_ratio_override=0.5)
     builder = NuPlanScenarioBuilder(args.data_path, args.map_path, None, None, map_version, scenario_mapping=scenario_mapping)
-    scenario_filter = ScenarioFilter(*get_filter_parameters(limit_total_scenarios=args.total_scenarios))
+    scenario_filter = ScenarioFilter(*get_filter_parameters(num_scenarios_per_type=30000, 
+                                                            limit_total_scenarios=args.total_scenarios))
     worker = SingleMachineParallelExecutor(use_process_pool=True)
     scenarios = builder.get_scenarios(scenario_filter, worker)
+    print(f"Total number of scenarios: {len(scenarios)}")
     
     del worker, builder, scenario_filter
     processor = DataProcessor(scenarios)
