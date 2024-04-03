@@ -371,6 +371,7 @@ class TreePlanner:
         leaves = TrajTree.get_children(tree)
 
         # query the model
+        parent_scores = {}
         trajs = [leaf.total_traj[1:] for leaf in leaves]
         agent_trajectories, scores = self.predict(encoder_outputs, trajs, agent_states, self.first_stage_horizon*10)
         indices = torch.topk(scores, self.n_candidates_expand)[1][0]
@@ -378,6 +379,7 @@ class TreePlanner:
         for i in indices:
             if i.item() < len(leaves):
                 pruned_leaves.append(leaves[i])
+                parent_scores[leaves[i]] = scores[0, i].item()
 
         # expand leaves with higher scores
         for leaf in pruned_leaves:
@@ -391,9 +393,29 @@ class TreePlanner:
         # query the model      
         trajs = [leaf.total_traj[1:] for leaf in leaves]
         agent_trajectories, scores = self.predict(encoder_outputs, trajs, agent_states, self.horizon*10)
-        index = torch.argmax(scores).item()
-        best_traj = trajs[index][:, :3]
+        
+        # calculate scores
+        children_scores = {}
+        for i, leaf in enumerate(leaves):
+            if leaf.parent in children_scores:
+                children_scores[leaf.parent].append(scores[0, i].item())
+            else:
+                children_scores[leaf.parent] = [scores[0, i].item()]
 
+        # get the best parent
+        best_parent = None
+        best_child_index = None
+        best_score = -np.inf
+        for parent in parent_scores.keys():
+            score = parent_scores[parent] + np.max(children_scores[parent])
+            if score > best_score:
+                best_parent = parent
+                best_score = score
+                best_child_index = np.argmax(children_scores[parent])
+
+        # get the best trajectory
+        best_traj = best_parent.children[best_child_index].total_traj[1:, :3]
+    
         # plot 
         if debug:
             for i, traj in enumerate(trajs):
