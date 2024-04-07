@@ -186,7 +186,7 @@ class ScoreDecoder(nn.Module):
             features = torch.cat((hardcoded_features, interaction_features), dim=-1)
             score = -torch.sum(features * weights, dim=-1)
             collision_feature = self.calculate_collision(ego_traj[:, i], agents_traj[:, i], agents_states, timesteps)
-            score += -collision_feature
+            score += -10 * collision_feature
             scores.append(score)
 
         scores = torch.stack(scores, dim=1)

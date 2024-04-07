@@ -36,7 +36,7 @@ export NUPLAN_EXP_ROOT="$HOME/nuplan/exp"
 Before training the DTPP model, you need to preprocess the raw data from nuPlan using:
 ```
 python data_process.py \
---data_path nuplan/dataset/nuplan-v1.1/splits/mini \
+--data_path nuplan/dataset/nuplan-v1.1/splits/val \
 --map_path nuplan/dataset/maps \
 --save_path nuplan/processed_data
 ```
@@ -58,13 +58,14 @@ To test the DTPP planning framework in nuPlan simulation scenarios, use:
 ```
 python test.py \
 --test_type closed_loop_nonreactive_agents \
---data_path nuplan/dataset/nuplan-v1.1/splits/mini \
+--data_path nuplan/dataset/nuplan-v1.1/splits/test \
 --map_path nuplan/dataset/maps \
---model_path training_log/your/model
+--model_path base_model.pth \
+--load_test_set
 ```
-Choose one of the three options ('open_loop_boxes', 'closed_loop_nonreactive_agents', 'closed_loop_reactive_agents') for ```--test_type```, and specify the path to your trained model ```--model_path```. Ensure to provide ```--data_path``` and ```--map_path``` arguments as done in the data process step.
+Choose one of the three options ('open_loop_boxes', 'closed_loop_nonreactive_agents', 'closed_loop_reactive_agents') for ```--test_type```, and specify the path to your trained model ```--model_path```. Ensure to provide ```--data_path``` and ```--map_path``` arguments as done in the data process step. Use ```--load_test_set``` and ```--model_path base_model.pth``` to test the performance of the base pre-trained model on selected testing scenarios.
 
-Adjust the ```--scenarios_per_type``` argument to control the number of scenarios tested per type.
+Adjust the ```--scenarios_per_type``` argument to control the number of scenarios tested per type. 
 
 **Ensure that the model parameters in ```planner.py``` under ```_initialize_model``` match those used in training.**
 

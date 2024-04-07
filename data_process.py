@@ -245,7 +245,7 @@ class DataProcessor(object):
                                             - first_stage_trajs[:, -1, :2], axis=-1)
             expert_error_2 = np.linalg.norm(ego_agent_future[None, self.future_time_horizon*10-1, :2] 
                                             - second_stage_trajs[:, -1, :2], axis=-1)       
-            if np.min(expert_error_1) > 1.5 and np.min(expert_error_2) > 3:
+            if np.min(expert_error_1) > 1.5 and np.min(expert_error_2) > 4:
                 continue
             
             # sort the candidate trajectories

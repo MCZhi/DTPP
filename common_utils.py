@@ -242,7 +242,7 @@ def get_filter_parameters(num_scenarios_per_type=None, limit_total_scenarios=Non
 
     expand_scenarios = False           # Whether to expand multi-sample scenarios to multiple single-sample scenarios
     remove_invalid_goals = True         # Whether to remove scenarios where the mission goal is invalid
-    shuffle = True                      # Whether to shuffle the scenarios
+    shuffle = False                      # Whether to shuffle the scenarios
 
     ego_start_speed_threshold = None     # Limit to scenarios where the ego reaches a certain speed from below
     ego_stop_speed_threshold = None      # Limit to scenarios where the ego reaches a certain speed from above
