@@ -73,11 +73,12 @@ Adjust the ```--scenarios_per_type``` argument to control the number of scenario
 ## Citation
 If you find this project useful in your research, please consider citing:
 ```BibTeX
-@article{huang2023dtpp,
-  title={DTPP: Differentiable joint conditional prediction and cost evaluation for tree policy planning in autonomous driving},
+@inproceedings{huang2024dtpp,
+  title={DTPP: Differentiable Joint Conditional Prediction and Cost Evaluation for Tree Policy Planning in Autonomous Driving},
   author={Huang, Zhiyu and Karkus, Peter and Ivanovic, Boris and Chen, Yuxiao and Pavone, Marco and Lv, Chen},
-  journal={arXiv preprint arXiv:2310.05885},
-  year={2023}
+  booktitle={2024 IEEE International Conference on Robotics and Automation (ICRA)},
+  pages={6806--6812},
+  year={2024}
 }
 ```
 
